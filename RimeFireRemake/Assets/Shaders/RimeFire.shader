@@ -5,13 +5,18 @@ Shader "Unlit/RimeFire"
         _MainTex ("Texture", 2D) = "white" {}
         _DisTex("Distortion Texture", 2D) = "white" {}
 
-        _InnerColor("Inner Color", Color) = (1, 1, 1, 1)
-        _OutterColor("Outter Color", Color) = (1, 1, 1, 1)
+        _InnerColor1("Inner Color", Color) = (1, 1, 1, 1)
+        _InnerColor2("Inner Color", Color) = (1, 1, 1, 1)
+        _OutterColor1("Outter Color", Color) = (1, 1, 1, 1)
+        _OutterColor2("Outter Color", Color) = (1, 1, 1, 1)
 
-		_Intensity("Intensity", Float) = 1
-		_DistortionScale("Distortion Scale", Float) = 1
-		_XSpeed1("Distortion 1 speed x axis", Float) = 1
-		_YSpeed1("Distortion 1 speed y axis", Float) = 1
+		_TopMask("Top Mask", Float) = 1
+		_BottomMask("Bottom Mask", Float) = 1
+
+		_Speed1("Distortion 1 speed", Float) = 1
+		_Speed2("Distortion 2 speed", Float) = 1
+
+		_Flicker("Flicker Speed", Float) = 1
     }
     SubShader
     {
@@ -50,13 +55,16 @@ Shader "Unlit/RimeFire"
 			sampler2D _DisTex;
             float4 _DisTex_ST;
 
-            float4 _InnerColor;
-            float4 _OutterColor;
+            float4 _InnerColor1;
+            float4 _OutterColor1;
+            float4 _InnerColor2;
+            float4 _OutterColor2;
 
-			float _Intensity;
-			float _DistortionScale;
-			float _XSpeed1;
-			float _YSpeed1;
+			float _TopMask;
+			float _BottomMask;
+			float _Speed1;
+			float _Speed2;
+			float _Flicker;
 
             v2f vert (appdata v)
             {
@@ -77,23 +85,21 @@ Shader "Unlit/RimeFire"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                _XSpeed1 *= _Time;
-                _YSpeed1 *= _Time;
+                _Speed1 *= _Time;
+                _Speed2 *= _Time;
 
-                float2 disUV1 = float2(i.uv.x, i.uv.y + _XSpeed1);
-                float2 disUV2 = float2(i.uv.x, i.uv.y + _YSpeed1);
+                float2 disUV1 = float2(i.uv.x, i.uv.y + _Speed1);
+                float2 disUV2 = float2(i.uv.x, i.uv.y + _Speed2);
 
                 fixed4 dist = tex2D(_DisTex, disUV1);
                 fixed4 dist2 = tex2D(_DisTex, disUV2);
 
                 float a = dist.r + dist2.g;
-                //a *= 0.333;
-                //a *= 2.3;
 
 
                 fixed4 shape = tex2D(_MainTex, i.uv);
-                float alphaMask = 1 - i.uv.y + _Intensity;
-                float bottomMask = i.uv.y + _DistortionScale;
+                float alphaMask = 1 - i.uv.y + _TopMask;
+                float bottomMask = i.uv.y + _BottomMask;
                 alphaMask *= shape.a;
 
                 a *= alphaMask;
@@ -106,14 +112,24 @@ Shader "Unlit/RimeFire"
                 fixed4 shape3 = tex2D(_MainTex, finalUV);
                 float cut = 1 - shape2.b;
 
-                float4 g = shape2.g * _InnerColor;
-                float4 r = shape2.r * _OutterColor;
+                float4 innerColor = lerp(_InnerColor1, _InnerColor2, sin(_Flicker * _Time));
+                float4 innerAlpha = lerp(_InnerColor1.a, _InnerColor2.a, sin(_Flicker * _Time));
+
+                innerColor *= innerAlpha;
+                
+                float4 outterColor = lerp(_OutterColor1, _OutterColor2, sin(_Flicker * _Time));
+                float4 outterAlpha = lerp(_OutterColor1.a, _OutterColor2.a, sin(_Flicker * _Time));
+
+                outterColor *= outterAlpha;
+
+                float4 g = shape2.g * innerColor;
+                float4 r = shape2.r * outterColor;
                 //________________________________
                 
                 float4 n = g + r;
                 
 
-                // UNITY_APPLY_FOG(i.fogCoord, col);
+                UNITY_APPLY_FOG(i.fogCoord, n);
 
                 return float4(n.rgb, cut);
                 // return shape2;

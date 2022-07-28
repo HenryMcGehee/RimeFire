@@ -5,13 +5,18 @@ Shader "Custom/RimeFireStandardShader"
         _MainTex ("Texture", 2D) = "white" {}
         _DisTex("Distortion Texture", 2D) = "white" {}
 
-        _InnerColor("Inner Color", Color) = (1, 1, 1)
-        _OutterColor("Outter Color", Color) = (1, 1, 1)
+        _InnerColor1("Inner Color", Color) = (1, 1, 1)
+        _InnerColor2("Inner Color", Color) = (1, 1, 1)
+        _OutterColor1("Outter Color", Color) = (1, 1, 1)
+        _OutterColor2("Outter Color", Color) = (1, 1, 1)
 
-		_Intensity("Intensity", Float) = 1
-		_DistortionScale("Distortion Scale", Float) = 1
-		_XSpeed1("Distortion 1 speed x axis", Float) = 1
-		_YSpeed1("Distortion 1 speed y axis", Float) = 1
+		_TopMask("Top Mask", Float) = 1
+		_BottomMask("Bottom mask", Float) = 1
+
+		_Speed1("Distortion 1 Speed", Float) = 1
+		_Speed2("Distortion 2 Speed", Float) = 1
+
+		_ColorFade("Flicker Speed", Float) = 1
     }
     SubShader
     {
@@ -43,13 +48,16 @@ Shader "Custom/RimeFireStandardShader"
         half _Metallic;
         fixed4 _Color;
         
-        float4 _InnerColor;
-        float4 _OutterColor;
+        float4 _InnerColor1;
+        float4 _InnerColor2;
+        float4 _OutterColor1;
+        float4 _OutterColor2;
 
-        float _Intensity;
-        float _DistortionScale;
-        float _XSpeed1;
-        float _YSpeed1;
+        float _TopMask;
+        float _BottomMask;
+        float _Speed1;
+        float _Speed2;
+        float _ColorFade;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -60,11 +68,11 @@ Shader "Custom/RimeFireStandardShader"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            _XSpeed1 *= _Time;
-            _YSpeed1 *= _Time;
+            _Speed1 *= _Time;
+            _Speed2 *= _Time;
 
-            float2 disUV1 = float2(IN.uv_DisTex.x, IN.uv_DisTex.y + _XSpeed1);
-            float2 disUV2 = float2(IN.uv_DisTex.x, IN.uv_DisTex.y + _YSpeed1);
+            float2 disUV1 = float2(IN.uv_DisTex.x, IN.uv_DisTex.y + _Speed1);
+            float2 disUV2 = float2(IN.uv_DisTex.x, IN.uv_DisTex.y + _Speed2);
 
             fixed4 dist = tex2D(_DisTex, disUV1);
             fixed4 dist2 = tex2D(_DisTex, disUV2);
@@ -72,8 +80,8 @@ Shader "Custom/RimeFireStandardShader"
             float a = dist.r + dist2.g;
 
             fixed4 shape = tex2D(_MainTex, IN.uv_MainTex);
-            float alphaMask = 1 - IN.uv_MainTex.y + _Intensity;
-            float bottomMask = IN.uv_MainTex.y + _DistortionScale;
+            float alphaMask = 1 - IN.uv_MainTex.y + _TopMask;
+            float bottomMask = IN.uv_MainTex.y + _BottomMask;
             alphaMask *= shape.a;
 
             a *= alphaMask;
@@ -83,8 +91,19 @@ Shader "Custom/RimeFireStandardShader"
             fixed4 shape2 = tex2D(_MainTex, finalUV);
             float cut = 1 - shape2.b;
 
-            float4 g = shape2.g * _InnerColor;
-            float4 r = shape2.r * _OutterColor;
+            float4 innerColor = lerp(_InnerColor1, _InnerColor2, sin(_ColorFade * _Time));
+            float4 innerAlpha = lerp(_InnerColor1.a, _InnerColor2.a, sin(_ColorFade * _Time));
+
+            innerColor *= innerAlpha;
+            
+            float4 outterColor = lerp(_OutterColor1, _OutterColor2, sin(_ColorFade * _Time));
+            float4 outterAlpha = lerp(_OutterColor1.a, _OutterColor2.a, sin(_ColorFade * _Time));
+
+            outterColor *= outterAlpha;
+
+
+            float4 g = shape2.g * innerColor;
+            float4 r = shape2.r * outterColor;
 
             // o.Albedo = g + r;
             o.Alpha = cut;
