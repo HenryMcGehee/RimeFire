@@ -2,21 +2,24 @@ Shader "Unlit/RimeFire"
 {
     Properties
     {
+        [HDR] _InnerColor1("Inner Color", Color) = (1, 1, 1, 1)
+        [HDR] _InnerColor2("Inner Color", Color) = (1, 1, 1, 1)
+        [HDR] _OutterColor1("Outter Color", Color) = (1, 1, 1, 1)
+        [HDR] _OutterColor2("Outter Color", Color) = (1, 1, 1, 1)
+		_DisScale1("Distortion Texture Scaler", Float) = 1
+		_DisScale2("Distortion 2 Texture Scaler", Float) = 1
+		_Flicker("Flicker Speed", Float) = 1
+		
+        _Speed1("Distortion 1 speed", Float) = 1
+		_Speed2("Distortion 2 speed", Float) = 1
+
         _MainTex ("Texture", 2D) = "white" {}
         _DisTex("Distortion Texture", 2D) = "white" {}
-
-        _InnerColor1("Inner Color", Color) = (1, 1, 1, 1)
-        _InnerColor2("Inner Color", Color) = (1, 1, 1, 1)
-        _OutterColor1("Outter Color", Color) = (1, 1, 1, 1)
-        _OutterColor2("Outter Color", Color) = (1, 1, 1, 1)
-
 		_TopMask("Top Mask", Float) = 1
 		_BottomMask("Bottom Mask", Float) = 1
 
-		_Speed1("Distortion 1 speed", Float) = 1
-		_Speed2("Distortion 2 speed", Float) = 1
 
-		_Flicker("Flicker Speed", Float) = 1
+
     }
     SubShader
     {
@@ -55,6 +58,8 @@ Shader "Unlit/RimeFire"
 			sampler2D _DisTex;
             float4 _DisTex_ST;
 
+            float _DisScale1;
+            float _DisScale2;
             float4 _InnerColor1;
             float4 _OutterColor1;
             float4 _InnerColor2;
@@ -91,8 +96,8 @@ Shader "Unlit/RimeFire"
                 float2 disUV1 = float2(i.uv.x, i.uv.y + _Speed1);
                 float2 disUV2 = float2(i.uv.x, i.uv.y + _Speed2);
 
-                fixed4 dist = tex2D(_DisTex, disUV1);
-                fixed4 dist2 = tex2D(_DisTex, disUV2);
+                fixed4 dist = tex2D(_DisTex, disUV1 * _DisScale1);
+                fixed4 dist2 = tex2D(_DisTex, disUV2 * _DisScale2);
 
                 float a = dist.r + dist2.g;
 
@@ -132,7 +137,7 @@ Shader "Unlit/RimeFire"
                 UNITY_APPLY_FOG(i.fogCoord, n);
 
                 return float4(n.rgb, cut);
-                // return shape2;
+                // return dist2;
             }
             ENDCG
         }

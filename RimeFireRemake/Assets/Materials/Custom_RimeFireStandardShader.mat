@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _DisTex:
-        m_Texture: {fileID: 2800000, guid: adc2a00e79e5b3e42bbe2f5ff1fae8b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: d0eff10747c989c4f91c279c089b9d0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -28,15 +28,18 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BottomMask: 0.32
+    - _BottomMask: 0.2
     - _ColorFade: 15
+    - _DisScale1: 0.38
+    - _DisScale2: 0.72
     - _DistortionScale: 0.31
+    - _Flicker: 1
     - _Glossiness: 0.5
     - _Intensity: -0.58
     - _Metallic: 0
-    - _Speed1: -2
-    - _Speed2: -4
-    - _TopMask: -0.56
+    - _Speed1: -4.07
+    - _Speed2: -8.76
+    - _TopMask: -0.72
     - _XSpeed1: -2
     - _YSpeed1: -4.95
     m_Colors:

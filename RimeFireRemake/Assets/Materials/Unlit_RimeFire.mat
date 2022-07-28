@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _DisTex:
-        m_Texture: {fileID: 2800000, guid: adc2a00e79e5b3e42bbe2f5ff1fae8b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: d0eff10747c989c4f91c279c089b9d0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DisTex2:
@@ -36,13 +36,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BottomMask: 0.09
+    - _BottomMask: -0.26
+    - _DisScale1: 0.28
+    - _DisScale2: 0.55
     - _DistortionScale: -0.47
     - _Flicker: 23.5
     - _Intensity: -1.25
-    - _Speed1: -2
-    - _Speed2: -4
-    - _TopMask: -0.16
+    - _Speed1: -10.21
+    - _Speed2: -8.14
+    - _TopMask: -1.1
     - _XSpeed1: -4.17
     - _XSpeed2: 1
     - _YSpeed1: -4
@@ -50,8 +52,8 @@ Material:
     m_Colors:
     - _InnerColor: {r: 0.7396226, g: 1, b: 0.9377137, a: 1}
     - _InnerColor1: {r: 0.7396226, g: 1, b: 1, a: 1}
-    - _InnerColor2: {r: 0.68301886, g: 1, b: 1, a: 1}
+    - _InnerColor2: {r: 0.7838177, g: 1.1486983, b: 1.1486983, a: 1}
     - _OutterColor: {r: 0.29622638, g: 0.94220716, b: 1, a: 1}
     - _OutterColor1: {r: 0.21960783, g: 0.84943056, b: 1, a: 1}
-    - _OutterColor2: {r: 0.35283017, g: 0.8179835, b: 1, a: 1}
+    - _OutterColor2: {r: 0.37827298, g: 0.8784339, b: 1.0717734, a: 1}
   m_BuildTextureStacks: []
