@@ -1,4 +1,4 @@
-Shader "Custom/RimeFireStandardShader"
+Shader "VFX/RimeFireStandardShader"
 {
     Properties
     {

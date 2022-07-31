@@ -1,4 +1,4 @@
-Shader "Unlit/RimeFire"
+Shader "VFX/RimeFireUnlit"
 {
     Properties
     {
@@ -100,21 +100,20 @@ Shader "Unlit/RimeFire"
                 fixed4 dist2 = tex2D(_DisTex, disUV2 * _DisScale2);
 
                 float a = dist.r + dist2.g;
-
+                a *= 0.3f;
+                a *= 2.3f;
 
                 fixed4 shape = tex2D(_MainTex, i.uv);
                 float alphaMask = 1 - i.uv.y + _TopMask;
-                float bottomMask = i.uv.y + _BottomMask;
+                float bottomMask = i.uv.y * _BottomMask;
                 alphaMask *= shape.a;
 
                 a *= alphaMask;
                 a *= bottomMask;
                 float2 finalUV = float2(i.uv.r, i.uv.g + a);
                 
-                float2 finalUVs = i.uv + dist.x + dist2.y;
-                finalUVs *= alphaMask;
                 fixed4 shape2 = tex2D(_MainTex, finalUV);
-                fixed4 shape3 = tex2D(_MainTex, finalUV);
+            
                 float cut = 1 - shape2.b;
 
                 float4 innerColor = lerp(_InnerColor1, _InnerColor2, sin(_Flicker * _Time));
@@ -137,7 +136,7 @@ Shader "Unlit/RimeFire"
                 UNITY_APPLY_FOG(i.fogCoord, n);
 
                 return float4(n.rgb, cut);
-                // return dist2;
+                // return float4(finalUV, 0, cut);
             }
             ENDCG
         }

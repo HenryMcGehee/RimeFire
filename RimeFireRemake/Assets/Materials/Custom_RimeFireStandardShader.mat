@@ -28,18 +28,18 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BottomMask: 0.2
+    - _BottomMask: 0.27
     - _ColorFade: 15
-    - _DisScale1: 0.38
-    - _DisScale2: 0.72
+    - _DisScale1: 0.51
+    - _DisScale2: 0.39
     - _DistortionScale: 0.31
-    - _Flicker: 1
+    - _Flicker: 15.92
     - _Glossiness: 0.5
     - _Intensity: -0.58
     - _Metallic: 0
     - _Speed1: -4.07
     - _Speed2: -8.76
-    - _TopMask: -0.72
+    - _TopMask: -0.85
     - _XSpeed1: -2
     - _YSpeed1: -4.95
     m_Colors:
