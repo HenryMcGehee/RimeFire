@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_RimeFire
+  m_Name: Unlit_RimeFire 2
   m_Shader: {fileID: 4800000, guid: d4e3cfd49ba63064b9ac54cb86e81255, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -52,9 +52,9 @@ Material:
     - _YSpeed2: 1
     m_Colors:
     - _InnerColor: {r: 0.7396226, g: 1, b: 0.9377137, a: 1}
-    - _InnerColor1: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerColor2: {r: 0.7508046, g: 1.0416923, b: 1.0416923, a: 1}
+    - _InnerColor1: {r: 0.54529196, g: 0.29104662, b: 0.7830189, a: 1}
+    - _InnerColor2: {r: 0.5114531, g: 0.19967957, b: 0.745283, a: 1}
     - _OutterColor: {r: 0.29622638, g: 0.94220716, b: 1, a: 1}
-    - _OutterColor1: {r: 0.48490566, g: 0.88226414, b: 1, a: 1}
-    - _OutterColor2: {r: 0.53723764, g: 0.9201469, b: 1.0664268, a: 1}
+    - _OutterColor1: {r: 0.07558849, g: 0.019366283, b: 0.6037736, a: 1}
+    - _OutterColor2: {r: 0.11458487, g: 0, b: 0.6037736, a: 1}
   m_BuildTextureStacks: []
