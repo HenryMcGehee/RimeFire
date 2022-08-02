@@ -1,3 +1,3 @@
 # RimeFire
 
-![alt text](https://imgur.com/dtg2Ypj)
+![image](https://imgur.com/dtg2Ypj)
